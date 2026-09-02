@@ -5,12 +5,17 @@ import itertools
 import json
 import math
 from pathlib import Path
+from typing import Any, Iterable
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy.stats import permutation_test
 
+Array = NDArray[np.float64]
+Result = dict[str, Any]
 
-def holm(ps):
+
+def holm(ps: list[float]) -> Array:
     """Holm-adjust p-values while preserving their original order."""
     order = np.argsort(ps)
     adjusted = np.empty(len(ps))
@@ -21,14 +26,17 @@ def holm(ps):
     return adjusted
 
 
-def hedges_g(a, b):
+def hedges_g(a: Array, b: Array) -> float:
     """Bias-corrected standardized difference: mean(a) - mean(b)."""
     na, nb = len(a), len(b)
     pooled = np.sqrt(((na - 1) * np.var(a, ddof=1) + (nb - 1) * np.var(b, ddof=1)) / (na + nb - 2))
-    return 0.0 if pooled == 0 else (np.mean(a) - np.mean(b)) / pooled * (1 - 3 / (4 * (na + nb) - 9))
+    value = 0.0 if pooled == 0 else (np.mean(a) - np.mean(b)) / pooled * (1 - 3 / (4 * (na + nb) - 9))
+    return float(value)
 
 
-def unpaired_permutation_test(a, b, permutations, rng):
+def unpaired_permutation_test(
+    a: Array, b: Array, permutations: int, rng: np.random.Generator
+) -> Result:
     """Two-sided independent-sample test of the difference in means."""
     statistic = lambda x, y: np.mean(x) - np.mean(y)
     result = permutation_test(
@@ -42,11 +50,13 @@ def unpaired_permutation_test(a, b, permutations, rng):
     }
 
 
-def omnibus(groups, permutations, rng):
+def omnibus(
+    groups: Iterable[Array], permutations: int, rng: np.random.Generator
+) -> dict[str, float]:
     """Independent-sample omnibus test using between-group variation."""
-    def statistic(*samples):
+    def statistic(*samples: Array) -> float:
         grand = np.mean(np.concatenate(samples))
-        return sum(len(x) * (np.mean(x) - grand) ** 2 for x in samples)
+        return float(sum(len(x) * (np.mean(x) - grand) ** 2 for x in samples))
 
     result = permutation_test(
         tuple(groups), statistic, permutation_type="independent", alternative="greater",
@@ -55,7 +65,9 @@ def omnibus(groups, permutations, rng):
     return {"statistic": float(result.statistic), "p_value": float(result.pvalue)}
 
 
-def analyze(data, permutations=100_000, seed=20260902):
+def analyze(
+    data: dict[str, Any], permutations: int = 100_000, seed: int = 20260902
+) -> Result:
     rng, output = np.random.default_rng(seed), {}
     for q_name, question in data["runs"].items():
         metrics = {}
@@ -74,7 +86,7 @@ def analyze(data, permutations=100_000, seed=20260902):
     return output
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path)
     parser.add_argument("--output-dir", type=Path)

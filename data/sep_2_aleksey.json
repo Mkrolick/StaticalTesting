@@ -72,7 +72,7 @@
       }
     },
     "question_2": {
-      "description": "descriminate between less layers 2, 3, or 4",
+      "description": "Compare models with 2, 3, or 4 layers",
       "kernel": 15,
       "bimamba": true,
       "runs": {

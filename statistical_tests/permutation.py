@@ -74,18 +74,6 @@ def analyze(data, permutations=100_000, seed=20260902):
     return output
 
 
-def report(results):
-    lines = ["# Permutation test results", "", "Independent, two-sided tests; pairwise p-values use Holm correction.", ""]
-    for name, question in results.items():
-        lines += [f"## {name}: {question['description']}", ""]
-        for metric, result in question["metrics"].items():
-            lines += [f"### {metric} (omnibus p = {result['omnibus']['p_value']:.6g})", "", "| Comparison | Mean difference | Hedges' g | Holm p | Significant |", "|---|---:|---:|---:|:---:|"]
-            for row in result["comparisons"]:
-                lines.append(f"| {' − '.join(row['groups'])} | {row['mean_difference']:.6g} | {row['hedges_g']:.4g} | {row['p_holm']:.6g} | {'yes' if row['p_holm'] < .05 else 'no'} |")
-            lines.append("")
-    return "\n".join(lines)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path)
@@ -97,5 +85,4 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     results = analyze(json.loads(args.input.read_text()), args.permutations, args.seed)
     (output / "results.json").write_text(json.dumps(results, indent=2) + "\n")
-    (output / "report.md").write_text(report(results).rstrip() + "\n")
     print(f"Wrote results to {output}")

@@ -27,7 +27,6 @@ The command automatically creates:
 ```text
 results/
 └── sep_2_aleksey/
-    ├── report.md
     └── results.json
 ```
 
@@ -38,9 +37,5 @@ To select another destination:
 ```
 
 Use `--permutations` to change the default of 100,000 random assignments and `--seed` to change the reproducibility seed.
-
-## Interpretation
-
-The omnibus test asks whether any configuration differs for a metric. Pairwise results identify which configurations differ. Use the Holm-adjusted p-value (`Holm p`) for the usual 0.05 significance decision. Statistical significance does not measure practical importance, so interpret it alongside the mean difference and Hedges' g.
 
 Because the random seeds do not correspond across configurations, all tests treat runs as independent rather than paired.

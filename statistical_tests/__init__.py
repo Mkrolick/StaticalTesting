@@ -1,5 +1,5 @@
 """Reusable statistical tests for independent experiment runs."""
 
-from .permutation import analyze, report
+from .permutation import analyze
 
-__all__ = ["analyze", "report"]
+__all__ = ["analyze"]

@@ -3,7 +3,6 @@
 import argparse
 import itertools
 import json
-import math
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -26,16 +25,6 @@ def holm(ps: list[float]) -> Array:
     return adjusted
 
 
-def hedges_g(a: Array, b: Array) -> float | None:
-    """Bias-corrected standardized difference: mean(a) - mean(b)."""
-    na, nb = len(a), len(b)
-    pooled = np.sqrt(((na - 1) * np.var(a, ddof=1) + (nb - 1) * np.var(b, ddof=1)) / (na + nb - 2))
-    if pooled == 0:
-        return 0.0 if np.mean(a) == np.mean(b) else None
-    value = (np.mean(a) - np.mean(b)) / pooled * (1 - 3 / (4 * (na + nb) - 9))
-    return float(value)
-
-
 def unpaired_permutation_test(
     a: Array, b: Array, permutations: int, rng: np.random.Generator
 ) -> Result:
@@ -45,10 +34,9 @@ def unpaired_permutation_test(
         (a, b), statistic, permutation_type="independent", alternative="two-sided",
         n_resamples=permutations, rng=rng,
     )
-    exact = math.comb(len(a) + len(b), len(a)) <= permutations
     return {
-        "mean_difference": float(result.statistic), "hedges_g": hedges_g(a, b),
-        "p_value": float(result.pvalue), "method": "exact" if exact else "monte_carlo",
+        "mean_difference": float(result.statistic),
+        "p_value": float(result.pvalue),
     }
 
 
@@ -65,14 +53,14 @@ def omnibus(
         tuple(groups), statistic, permutation_type="independent", alternative="greater",
         n_resamples=permutations, rng=rng,
     )
-    return {"statistic": float(result.statistic), "p_value": float(result.pvalue)}
+    return {"p_value": float(result.pvalue)}
 
 
 def analyze(
     data: dict[str, Any], permutations: int = 100_000, seed: int = 20260902
 ) -> Result:
     """Analyze every metric and configuration in an experiment document."""
-    rng, output = np.random.default_rng(seed), {}
+    rng, questions = np.random.default_rng(seed), {}
     for q_name, question in data["runs"].items():
         metrics = {}
         for metric, raw in question["runs"].items():
@@ -83,11 +71,10 @@ def analyze(
             for row, adjusted in zip(comparisons, holm([x["p_value"] for x in comparisons])):
                 row["p_holm"] = float(adjusted)
             metrics[metric] = {
-                "summary": {name: {"n": len(x), "mean": float(np.mean(x)), "sd": float(np.std(x, ddof=1))} for name, x in groups.items()},
                 "omnibus": omnibus(groups.values(), permutations, rng), "comparisons": comparisons,
             }
-        output[q_name] = {"description": question.get("description", ""), "metrics": metrics}
-    return output
+        questions[q_name] = {"description": question.get("description", ""), "metrics": metrics}
+    return {"settings": {"permutations": permutations, "seed": seed}, "questions": questions}
 
 
 def main() -> None:

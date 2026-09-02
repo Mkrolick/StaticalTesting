@@ -1,0 +1,402 @@
+{
+  "runs": {
+    "question_1": {
+      "description": "Bimamba vs. SISO",
+      "kernel": 15,
+      "layers": 4,
+      "runs": {
+        "test_auprc": {
+          "bimamba": [
+            0.8241,
+            0.8051,
+            0.8043,
+            0.8086,
+            0.8081
+          ],
+          "siso": [
+            0.7957,
+            0.7961,
+            0.7832,
+            0.7915,
+            0.7832
+          ]
+        },
+        "val_auprc": {
+          "bimamba": [
+            0.8256,
+            0.8115,
+            0.8111,
+            0.8163,
+            0.8162
+          ],
+          "siso": [
+            0.8028,
+            0.7998,
+            0.7944,
+            0.8007,
+            0.7949
+          ]
+        },
+        "test_loss": {
+          "bimamba": [
+            0.209537,
+            0.219454,
+            0.21883,
+            0.217694,
+            0.220509
+          ],
+          "siso": [
+            0.225511,
+            0.224862,
+            0.234139,
+            0.225135,
+            0.237739
+          ]
+        }
+      },
+      "wandb": {
+        "bimamba": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/o5wtmjvh",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/lb2qhmh5",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/lilrj0z9",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/tdopd3id",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/cpl23pxs"
+        ],
+        "siso": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/1h1hhok0",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/1ib5th93",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/kfpttcob",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/fe4t4gra",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/1tou12r3"
+        ]
+      }
+    },
+    "question_2": {
+      "description": "descriminate between less layers 2, 3, or 4",
+      "kernel": 15,
+      "bimamba": true,
+      "runs": {
+        "test_auprc": {
+          "2": [
+            0.7478,
+            0.7469,
+            0.7438,
+            0.7466,
+            0.7362
+          ],
+          "3": [
+            0.7954,
+            0.7914,
+            0.7944,
+            0.798,
+            0.7923
+          ],
+          "4": [
+            0.8241,
+            0.8051,
+            0.8043,
+            0.8086,
+            0.8081
+          ]
+        },
+        "val_auprc": {
+          "2": [
+            0.7629,
+            0.7566,
+            0.7623,
+            0.7564,
+            0.7489
+          ],
+          "3": [
+            0.8065,
+            0.798,
+            0.8036,
+            0.8054,
+            0.8032
+          ],
+          "4": [
+            0.8256,
+            0.8115,
+            0.8111,
+            0.8163,
+            0.8162
+          ]
+        },
+        "test_loss": {
+          "2": [
+            0.255091,
+            0.260939,
+            0.259893,
+            0.252742,
+            0.259164
+          ],
+          "3": [
+            0.227619,
+            0.234315,
+            0.227122,
+            0.227238,
+            0.227455
+          ],
+          "4": [
+            0.209537,
+            0.219454,
+            0.21883,
+            0.217694,
+            0.220509
+          ]
+        }
+      },
+      "wandb": {
+        "2": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/az48sg27",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/dgs5cesi",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/6lnvq3n2",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/ap3efosm",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/awflch9x"
+        ],
+        "3": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/2jvzf7en",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/pjhnecx4",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/c6lw0iry",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/4anme61c",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/mdqaz32l"
+        ],
+        "4": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/o5wtmjvh",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/lb2qhmh5",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/lilrj0z9",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/tdopd3id",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/cpl23pxs"
+        ]
+      }
+    },
+    "question_3": {
+      "description": "sweeping effect kernel sizes across bimamba",
+      "layers": 4,
+      "bimamba": true,
+      "runs": {
+        "test_auprc": {
+          "15": [
+            0.8151,
+            0.8168,
+            0.8092,
+            0.803,
+            0.81
+          ],
+          "19": [
+            0.8146,
+            0.8089,
+            0.8109,
+            0.817,
+            0.8228
+          ],
+          "23": [
+            0.8194,
+            0.8201,
+            0.8141,
+            0.8029,
+            0.8056
+          ],
+          "27": [
+            0.8229,
+            0.8137,
+            0.8189,
+            0.8202,
+            0.8203
+          ],
+          "31": [
+            0.8209,
+            0.8234,
+            0.8187,
+            0.8054,
+            0.8268
+          ]
+        },
+        "val_auprc": {
+          "15": [
+            0.8208,
+            0.8264,
+            0.8117,
+            0.8041,
+            0.8177
+          ],
+          "19": [
+            0.821,
+            0.8169,
+            0.814,
+            0.8234,
+            0.8256
+          ],
+          "23": [
+            0.823,
+            0.8232,
+            0.8192,
+            0.8178,
+            0.8151
+          ],
+          "27": [
+            0.8266,
+            0.8177,
+            0.8257,
+            0.8198,
+            0.8243
+          ],
+          "31": [
+            0.8261,
+            0.8306,
+            0.826,
+            0.8088,
+            0.8362
+          ]
+        },
+        "test_loss": {
+          "15": [
+            0.215815,
+            0.211341,
+            0.217983,
+            0.226221,
+            0.2161
+          ],
+          "19": [
+            0.212475,
+            0.216131,
+            0.217841,
+            0.21586,
+            0.213256
+          ],
+          "23": [
+            0.21257,
+            0.212197,
+            0.216474,
+            0.220595,
+            0.219854
+          ],
+          "27": [
+            0.210372,
+            0.215355,
+            0.211771,
+            0.210752,
+            0.211554
+          ],
+          "31": [
+            0.210356,
+            0.211082,
+            0.211872,
+            0.221069,
+            0.204378
+          ]
+        }
+      },
+      "wandb": {
+        "15": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/td45zcy8",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/d4f9ptdd",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/3kkmtbkd",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/zfbwhz05",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/gcko8pwu"
+        ],
+        "19": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/iuqnswp2",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/y2tyr1q3",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/sdjc2a2f",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/nwl4ye75",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/88fuqwc2"
+        ],
+        "23": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/bq5ablr5",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/ne0eywsc",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/imet46w4",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/8m04mktk",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/iutc629m"
+        ],
+        "27": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/xkqyil9w",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/hw8lg3o4",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/53z20b9a",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/ra9ad8kz",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/03m7i6n5"
+        ],
+        "31": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/36eisev6",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/oob8ujw1",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/ynef3l8n",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/dcp52i06",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/e8cad24e"
+        ]
+      }
+    },
+    "question_4": {
+      "description": "on the removal of the CNN (for bimamba)",
+      "kernel": 15,
+      "layers": 4,
+      "bimamba": true,
+      "input_cnn_kernel": 7,
+      "runs": {
+        "test_auprc": {
+          "embedding": [
+            0.8151,
+            0.8168,
+            0.8092,
+            0.803,
+            0.81
+          ],
+          "embedding_cnn": [
+            0.7991,
+            0.7919,
+            0.7898,
+            0.7947,
+            0.8047
+          ]
+        },
+        "val_auprc": {
+          "embedding": [
+            0.8208,
+            0.8264,
+            0.8117,
+            0.8041,
+            0.8177
+          ],
+          "embedding_cnn": [
+            0.8031,
+            0.8021,
+            0.7988,
+            0.8024,
+            0.8039
+          ]
+        },
+        "test_loss": {
+          "embedding": [
+            0.215815,
+            0.211341,
+            0.217983,
+            0.226221,
+            0.2161
+          ],
+          "embedding_cnn": [
+            0.22323,
+            0.229857,
+            0.237155,
+            0.227918,
+            0.222945
+          ]
+        }
+      },
+      "wandb": {
+        "embedding": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/td45zcy8",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/d4f9ptdd",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/3kkmtbkd",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/zfbwhz05",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/gcko8pwu"
+        ],
+        "embedding_cnn": [
+          "https://wandb.ai/mkrolick/mamba-tss/runs/x4wjqa2w",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/ezk67fz2",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/fobxdfh2",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/4x968l7w",
+          "https://wandb.ai/mkrolick/mamba-tss/runs/o4o2vcke"
+        ]
+      }
+    }
+  }
+}

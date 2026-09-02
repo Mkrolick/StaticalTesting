@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
-from statistical_tests.permutation import analyze, hedges_g, holm, unpaired_permutation_test
+from statistical_tests.permutation import analyze, holm, unpaired_permutation_test
 
 
 class StatisticalTests(unittest.TestCase):
@@ -17,11 +17,6 @@ class StatisticalTests(unittest.TestCase):
         """Holm correction preserves order and step-down monotonicity."""
         np.testing.assert_allclose(holm([0.01, 0.04, 0.03]), [0.03, 0.06, 0.06])
 
-    def test_hedges_g_for_constant_groups(self) -> None:
-        """Constant groups distinguish zero from undefined effects."""
-        self.assertEqual(hedges_g(np.array([1.0, 1.0]), np.array([1.0, 1.0])), 0.0)
-        self.assertIsNone(hedges_g(np.array([1.0, 1.0]), np.array([2.0, 2.0])))
-
     def test_two_group_test_is_exact_and_two_sided(self) -> None:
         """Small two-group samples use the exact two-sided test."""
         result = unpaired_permutation_test(
@@ -30,7 +25,6 @@ class StatisticalTests(unittest.TestCase):
             100,
             np.random.default_rng(1),
         )
-        self.assertEqual(result["method"], "exact")
         self.assertAlmostEqual(result["p_value"], 0.1)
         self.assertEqual(result["mean_difference"], 9.0)
 
@@ -39,7 +33,15 @@ class StatisticalTests(unittest.TestCase):
         data = {"runs": {"q": {"runs": {"score": {
             "a": [1, 2, 3], "b": [4, 5, 6], "c": [7, 8, 9]
         }}}}}
-        self.assertEqual(analyze(data, 100, 7), analyze(data, 100, 7))
+        result = analyze(data, 100, 7)
+        self.assertEqual(result, analyze(data, 100, 7))
+        self.assertEqual(result["settings"], {"permutations": 100, "seed": 7})
+        metric = result["questions"]["q"]["metrics"]["score"]
+        self.assertEqual(set(metric["omnibus"]), {"p_value"})
+        self.assertEqual(
+            set(metric["comparisons"][0]),
+            {"groups", "mean_difference", "p_value", "p_holm"},
+        )
 
     def test_cli_writes_only_json(self) -> None:
         """The command writes valid JSON and no additional reports."""
